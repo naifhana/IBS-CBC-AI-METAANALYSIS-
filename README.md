@@ -16,3 +16,6 @@
 
 ## Output
 The script will generate forest plots in the `results` directory.
+Limitations
+- Control group data not included in Yemeni cohort due to [reason]
+- Model uses IBS presence/absence as binary target (1 = IBS, 0 = missing subtype)
