@@ -1,0 +1,24 @@
+# Load required libraries
+library(metafor)
+library(ggplot2)
+
+# Read aggregated data
+data <- read.csv("../data/aggregated_meta_data.csv")
+
+# Function to calculate SMD for subtypes
+calculate_smd <- function(subtype) {
+  df <- data[data$IBS_Subtype == subtype, ]
+  nlr_sd <- as.numeric(sapply(strsplit(df$NLR_Mean_SD, "±"), `[`, 2))
+  rma(yi = as.numeric(sapply(strsplit(df$NLR_Mean_SD, "±"), `[`, 1)), 
+      sei = nlr_sd, 
+      data = df, 
+      method = "DL")
+}
+
+# Calculate for IBS-D
+results_ibsd <- calculate_smd("IBS-D")
+forest(results_ibsd, main = "NLR in IBS-D Subtype")
+
+# Calculate for IBS-C
+results_ibsc <- calculate_smd("IBS-C")
+forest(results_ibsc, main = "NLR in IBS-C Subtype")
