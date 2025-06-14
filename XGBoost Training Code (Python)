@@ -1,0 +1,44 @@
+import pandas as pd
+import xgboost as xgb
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, roc_auc_score
+import joblib
+import numpy as np
+
+# Load Yemeni cohort data
+data = pd.read_csv("../../data/yemen_cohort_raw.csv")
+
+# Preprocessing
+# Convert IBS_Subtype to binary target (1 for IBS, 0 for missing)
+data['Target'] = np.where(data['IBS_Subtype'].notnull(), 1, 0)
+
+# Handle missing values
+data.fillna(0, inplace=True)
+
+# Select features and target
+X = data[['NLR', 'MPV', 'PLR']]
+y = data['Target']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train XGBoost model
+model = xgb.XGBClassifier(
+    objective='binary:logistic',
+    n_estimators=150,
+    max_depth=5,
+    learning_rate=0.1
+)
+model.fit(X_train, y_train)
+
+# Evaluate model
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+auc = roc_auc_score(y_test, model.predict_proba(X_test)[:,1])
+
+print(f"Model Accuracy: {accuracy:.2%}")
+print(f"AUC: {auc:.2f}")
+
+# Save model
+joblib.dump(model, '../../models/ibs_xgboost_model.pkl')
+print("Model saved successfully!")
