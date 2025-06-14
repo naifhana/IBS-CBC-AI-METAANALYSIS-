@@ -1,0 +1,15 @@
+/IBS-CBC-AI-MetaAnalysis/
+├── data/
+│   ├── aggregated_meta_data.csv   # 110 studies
+│   └── yemen_cohort_raw.csv       # 142 patients
+├── code/
+│   ├── meta_analysis/
+│   │   └── random_effects_model.R
+│   └── AI_model/
+│       └── train_xgboost.py
+├── docs/
+│   └── deid_protocol.md
+├── models/                # Will be created after training
+├── README.md
+└── requirements.txt
+```
