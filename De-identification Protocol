@@ -1,0 +1,14 @@
+Data De-identification Process
+
+1. **Direct Identifiers Removal**:
+   - Patient names
+   - ID numbers
+   - Exact birth dates
+
+2. **Sensitive Data Generalization**:
+   - Location → Governorate only
+   - Age → 5-year age groups (e.g., 40-45)
+   
+3. **Statistical Noise Addition**:
+   - Added ±0.1% Gaussian noise to CBC values
+   - Date shifting ±30 days for collection dates
